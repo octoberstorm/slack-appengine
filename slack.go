@@ -1,17 +1,20 @@
 package slack
 
 import (
+	"golang.org/x/net/context"
 	"net/url"
 )
 
 type Slack struct {
-	token string
+	token string          // token
+	ctx   context.Context // app engine context
 }
 
-// Create a slack client with an API token.
-func New(token string) *Slack {
+// Create a slack client with an API token & an app engine context
+func New(token string, ctx context.Context) *Slack {
 	return &Slack{
 		token: token,
+		ctx:   ctx,
 	}
 }
 

@@ -2,13 +2,15 @@ package slack
 
 import (
 	"bytes"
+	"google.golang.org/appengine/log"
+	"google.golang.org/appengine/urlfetch"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 )
 
 func (sl *Slack) request(req *http.Request) ([]byte, error) {
-	cl := newHttpClient()
+	cl := urlfetch.Client(sl.ctx)
 	res, err := cl.Do(req)
 	if err != nil {
 		return nil, err
