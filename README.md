@@ -1,6 +1,8 @@
-# Slack [![GoDoc](https://godoc.org/github.com/bluele/slack?status.png)](https://godoc.org/github.com/bluele/slack)
+# Slack [![GoDoc](https://godoc.org/github.com/rickt/slack?status.png)](https://godoc.org/github.com/rickt/slack)
 
 Golang client for the Slack API. Include the example code using each slack api.
+
+Modified for use with Google App Engine. HTTP requests are restricted/controlled in App Engine, you have to use a helper function. See https://cloud.google.com/appengine/docs/go/urlfetch/ for more details. 
 
 ## Currently supports:
 
