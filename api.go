@@ -2,7 +2,6 @@ package slack
 
 import (
 	"bytes"
-	"google.golang.org/appengine/log"
 	"google.golang.org/appengine/urlfetch"
 	"io/ioutil"
 	"net/http"
