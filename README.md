@@ -57,3 +57,10 @@ If you are looking for slack commandline utility, [vektorlab/slackcat](https://g
 
 * <http://github.com/bluele>
 * <junkxdev@gmail.com>
+
+# Patches by
+
+**Rick Tait**
+
+* <http://github.com/rickt>
+* <rickt@rickt.org>
