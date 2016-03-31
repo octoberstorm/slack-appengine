@@ -5,6 +5,7 @@ import (
 	"errors"
 )
 
+// slack usergroup type
 type UserGroup struct {
 	ID          string `json:"id"`
 	TeamID      string `json:"team_id"`
@@ -27,7 +28,6 @@ type UserGroup struct {
 	Users     []string `json:"users,omitempty"`
 	UserCount int      `json:"user_count,omitempty"`
 }
-
 type UserGroupData []*UserGroup
 
 // implement the sort interface
@@ -42,7 +42,7 @@ func (u UserGroupData) Swap(i, j int) {
 }
 
 // API usergroups.list: Lists all user groups in a Slack team.
-func (sl *Slack) UserGroupsList() ([]*UserGroup, error) {
+func (sl *Slack) UserGroupsList() (UserGroupData, error) {
 	uv := sl.urlValues()
 	body, err := sl.GetRequest(userGroupsListApiEndpoint, uv)
 	if err != nil {
@@ -66,11 +66,13 @@ type UserGroupsListAPIResponse struct {
 }
 
 // matching func
-func (res *UserGroupsListAPIResponse) UserGroups() ([]*UserGroup, error) {
-	var usergroups []*UserGroup
+func (res *UserGroupsListAPIResponse) UserGroups() (UserGroupData, error) {
+	var usergroups UserGroupData
 	err := json.Unmarshal(res.RawGroups, &usergroups)
 	if err != nil {
 		return nil, err
 	}
 	return usergroups, nil
 }
+
+// EOF

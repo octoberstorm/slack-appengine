@@ -32,7 +32,6 @@ type ProfileInfo struct {
 	Image72   string `json:"image_72"`
 	Image192  string `json:"image_192"`
 }
-
 type UserData []*User
 
 // implement the sort interface
@@ -47,7 +46,7 @@ func (u UserData) Swap(i, j int) {
 }
 
 // API users.list: Lists all users in a Slack team.
-func (sl *Slack) UsersList() ([]*User, error) {
+func (sl *Slack) UsersList() (UserData, error) {
 	uv := sl.urlValues()
 	body, err := sl.GetRequest(usersListApiEndpoint, uv)
 	if err != nil {
@@ -70,8 +69,8 @@ type UsersListAPIResponse struct {
 	RawMembers json.RawMessage `json:"members"`
 }
 
-func (res *UsersListAPIResponse) Members() ([]*User, error) {
-	var members []*User
+func (res *UsersListAPIResponse) Members() (UserData, error) {
+	var members UserData
 	err := json.Unmarshal(res.RawMembers, &members)
 	if err != nil {
 		return nil, err
