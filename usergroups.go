@@ -5,28 +5,27 @@ import (
 	"errors"
 )
 
-// slack usergroup type
 type UserGroup struct {
-	ID          string      `json:"id"`
-	TeamID      string      `json:"team_id"`
-	IsUsergroup bool        `json:"is_usergroup"`
-	Name        string      `json:"name"`
-	Description string      `json:"description"`
-	Handle      string      `json:"handle"`
-	IsExternal  bool        `json:"is_external"`
-	DateCreate  int         `json:"date_create"`
-	DateUpdate  int         `json:"date_update"`
-	DateDelete  int         `json:"date_delete"`
-	AutoType    string      `json:"auto_type"`
-	CreatedBy   string      `json:"created_by"`
-	UpdatedBy   string      `json:"updated_by"`
-	DeletedBy   interface{} `json:"deleted_by"`
+	ID          string `json:"id"`
+	TeamID      string `json:"team_id"`
+	IsUsergroup bool   `json:"is_usergroup"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Handle      string `json:"handle"`
+	IsExternal  bool   `json:"is_external"`
+	DateCreate  int    `json:"date_create"`
+	DateUpdate  int    `json:"date_update"`
+	DateDelete  int    `json:"date_delete"`
+	AutoType    string `json:"auto_type"`
+	CreatedBy   string `json:"created_by"`
+	UpdatedBy   string `json:"updated_by"`
+	DeletedBy   string `json:"deleted_by"`
 	Prefs       struct {
-		Channels []interface{} `json:"channels"`
-		Groups   []interface{} `json:"groups"`
-	} `json:"prefs"`
-	Users     []string `json:"users"`
-	UserCount string   `json:"user_count"`
+		Channels []string `json:"channels"`
+		Groups   []string `json:"groups"`
+	} `json:"prefs,omitempty"`
+	Users     []string `json:"users,omitempty"`
+	UserCount int      `json:"user_count,omitempty"`
 }
 
 // API usergroups.list: Lists all user groups in a Slack team.
