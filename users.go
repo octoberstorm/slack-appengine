@@ -26,11 +26,24 @@ type ProfileInfo struct {
 	Email     string `json:"email"`
 	Skype     string `json:"skype"`
 	Phone     string `json:"phone"`
-	Image24   string `json:"image_24"`
+	Image25   string `json:"image_24"`
 	Image32   string `json:"image_32"`
 	Image48   string `json:"image_48"`
 	Image72   string `json:"image_72"`
 	Image192  string `json:"image_192"`
+}
+
+type UserData []*User
+
+// implement the sort interface
+func (u UserData) Len() int {
+	return len(u)
+}
+func (u UserData) Less(i, j int) bool {
+	return u[i].Name < u[j].Name
+}
+func (u UserData) Swap(i, j int) {
+	u[i], u[j] = u[j], u[i]
 }
 
 // API users.list: Lists all users in a Slack team.

@@ -28,6 +28,19 @@ type UserGroup struct {
 	UserCount int      `json:"user_count,omitempty"`
 }
 
+type UserGroupData []*UserGroup
+
+// implement the sort interface
+func (u UserGroupData) Len() int {
+	return len(u)
+}
+func (u UserGroupData) Less(i, j int) bool {
+	return u[i].Name < u[j].Name
+}
+func (u UserGroupData) Swap(i, j int) {
+	u[i], u[j] = u[j], u[i]
+}
+
 // API usergroups.list: Lists all user groups in a Slack team.
 func (sl *Slack) UserGroupsList() ([]*UserGroup, error) {
 	uv := sl.urlValues()
