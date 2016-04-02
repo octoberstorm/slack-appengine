@@ -40,7 +40,7 @@ func (u UserData) Len() int {
 	return len(u)
 }
 func (u UserData) Less(i, j int) bool {
-	return u[i].Name < u[j].Name
+	return u[i].Profile.FirstName < u[j].Profile.FirstName
 }
 func (u UserData) Swap(i, j int) {
 	u[i], u[j] = u[j], u[i]
