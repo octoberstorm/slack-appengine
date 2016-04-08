@@ -5,6 +5,10 @@ import (
 	"errors"
 )
 
+//
+// types
+//
+
 // slack user type
 type User struct {
 	Id       string `json:"id"`
@@ -46,6 +50,39 @@ func (u UserData) Swap(i, j int) {
 	u[i], u[j] = u[j], u[i]
 }
 
+// presence data
+type UserPresence struct {
+	Ok              string `json:"ok,omitempty"`
+	Presence        string `json:"presence,omitempty"`
+	Online          bool   `json:"online,omitempty"`
+	AutoAway        bool   `json:"auto_away,omitempty"`
+	ManualAway      bool   `json:"manual_away,omitempty"`
+	ConnectionCount int    `json:"connection_count,omitempty"`
+	LastActivity    int64  `json:"last_activity,omitempty"`
+}
+
+// response type of `users.info` api
+type UsersInfoAPIResponse struct {
+	BaseAPIResponse
+	User *User `json:"user"`
+}
+
+// response type of `users.list` api
+type UsersListAPIResponse struct {
+	BaseAPIResponse
+	RawMembers json.RawMessage `json:"members"`
+}
+
+// user presence response type of `users.getpresence` api
+type UserPresenceAPIResponse struct {
+	BaseAPIResponse
+	Presence *UserPresence
+}
+
+//
+// funcs
+//
+
 // API users.list: Lists all users in a Slack team.
 func (sl *Slack) UsersList() (UserData, error) {
 	uv := sl.urlValues()
@@ -62,12 +99,6 @@ func (sl *Slack) UsersList() (UserData, error) {
 		return nil, errors.New(res.Error)
 	}
 	return res.Members()
-}
-
-// response type of `users.list` api
-type UsersListAPIResponse struct {
-	BaseAPIResponse
-	RawMembers json.RawMessage `json:"members"`
 }
 
 func (res *UsersListAPIResponse) Members() (UserData, error) {
@@ -100,17 +131,29 @@ func (sl *Slack) FindUserByName(name string) (*User, error) {
 	})
 }
 
-// response type of `users.info` api
-type UsersInfoAPIResponse struct {
-	BaseAPIResponse
-	User *User `json:"user"`
+// get user's presence
+func (sl *Slack) GetUserPresence(name string) (*UserPresence, error) {
+	uv := sl.urlValues()
+	uv.Add("user", name)
+	body, err := sl.GetRequest(userPresenceApiEndpoint, uv)
+	if err != nil {
+		return nil, err
+	}
+	res := new(UserPresenceAPIResponse)
+	err = json.Unmarshal(body, res)
+	if err != nil {
+		return nil, err
+	}
+	if !res.Ok {
+		return nil, errors.New(res.Error)
+	}
+	return res.Presence, nil
 }
 
 // API users.info: Gets information about a user.
 func (sl *Slack) UsersInfo(userId string) (*User, error) {
 	uv := sl.urlValues()
 	uv.Add("user", userId)
-
 	body, err := sl.GetRequest(usersInfoApiEndpoint, uv)
 	if err != nil {
 		return nil, err
