@@ -2,7 +2,11 @@
 
 Golang client for the Slack API. Include the example code using each slack api.
 
-Modified for use with Google App Engine. HTTP requests are restricted/controlled in App Engine, you have to use a helper function. See https://cloud.google.com/appengine/docs/go/urlfetch/ for more details. 
+Modifications by Rick Tait:
+
+* HTTP request changes to work w/Google App Engine. HTTP requests are restricted/controlled in App Engine, you have to use a helper function. See https://cloud.google.com/appengine/docs/go/urlfetch/ for more details
+* added Slack usergroup support
+* added Slack user presence support
 
 ## Currently supports:
 
