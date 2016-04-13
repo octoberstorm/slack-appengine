@@ -30,7 +30,7 @@ type ProfileInfo struct {
 	Email     string `json:"email"`
 	Skype     string `json:"skype"`
 	Phone     string `json:"phone"`
-	Image25   string `json:"image_24"`
+	Image24   string `json:"image_24"`
 	Image32   string `json:"image_32"`
 	Image48   string `json:"image_48"`
 	Image72   string `json:"image_72"`
