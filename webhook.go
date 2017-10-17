@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"golang.org/x/net/context"
 	"google.golang.org/appengine/urlfetch"
 	"io/ioutil"
 	"net/http"
@@ -11,6 +12,7 @@ import (
 
 type WebHook struct {
 	hookURL string
+	ctx     context.Context
 }
 
 type WebHookPostPayload struct {
@@ -23,12 +25,12 @@ type WebHookPostPayload struct {
 	Attachments []*Attachment `json:"attachments,omitempty"`
 }
 
-func NewWebHook(hookURL string) *WebHook {
-	return &WebHook{hookURL}
+func NewWebHook(hookURL string, ctx context.Context) *WebHook {
+	return &WebHook{hookURL: hookURL, ctx: ctx}
 }
 
-func request(req *http.Request) ([]byte, error) {
-	cl := urlfetch.Client(sl.ctx)
+func (hk *WebHook) request(req *http.Request) ([]byte, error) {
+	cl := urlfetch.Client(hk.ctx)
 	res, err := cl.Do(req)
 	if err != nil {
 		return nil, err
@@ -48,5 +50,5 @@ func (hk *WebHook) PostMessage(payload *WebHookPostPayload) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return request(req)
+	return hk.request(req)
 }
