@@ -47,7 +47,7 @@ func (hk *WebHook) PostMessage(payload *WebHookPostPayload) error {
 	req, err := http.NewRequest("POST", hk.hookURL, bytes.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	if err != nil {
-		return nil, err
+		return err
 	}
 	_, err = hk.request(req)
 
