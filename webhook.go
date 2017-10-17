@@ -22,6 +22,7 @@ type WebHookPostPayload struct {
 	IconEmoji   string        `json:"icon_emoji,omitempty"`
 	UnfurlLinks bool          `json:"unfurl_links,omitempty"`
 	LinkNames   int           `json:"link_names,omitempty"`
+	Parse       string        `json:"parse,omitempty"`
 	Attachments []*Attachment `json:"attachments,omitempty"`
 }
 
