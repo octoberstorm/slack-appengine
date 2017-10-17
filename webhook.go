@@ -23,6 +23,7 @@ type WebHookPostPayload struct {
 	UnfurlLinks bool          `json:"unfurl_links,omitempty"`
 	LinkNames   int           `json:"link_names,omitempty"`
 	Parse       string        `json:"parse,omitempty"`
+	Mrkdwn      bool          `json:"mrkdwn,omitempty"`
 	Attachments []*Attachment `json:"attachments,omitempty"`
 }
 
