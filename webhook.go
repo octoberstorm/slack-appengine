@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"google.golang.org/appengine/urlfetch"
 	"io/ioutil"
 	"net/http"
 )
@@ -26,21 +27,26 @@ func NewWebHook(hookURL string) *WebHook {
 	return &WebHook{hookURL}
 }
 
-func (hk *WebHook) PostMessage(payload *WebHookPostPayload) error {
+func request(req *http.Request) ([]byte, error) {
+	cl := urlfetch.Client(sl.ctx)
+	res, err := cl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+	return ioutil.ReadAll(res.Body)
+}
+
+func (hk *WebHook) PostMessage(payload *WebHookPostPayload) ([]byte, error) {
 	body, err := json.Marshal(payload)
 	if err != nil {
 		return err
 	}
-	resp, err := http.Post(hk.hookURL, "application/json", bytes.NewReader(body))
+
+	req, err := http.NewRequest("POST", hk.hookURL, bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
 	if err != nil {
-		return err
+		return nil, err
 	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 200 {
-		t, _ := ioutil.ReadAll(resp.Body)
-		return errors.New(string(t))
-	}
-
-	return nil
+	return request(req)
 }
