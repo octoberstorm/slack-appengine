@@ -3,7 +3,6 @@ package slack
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"golang.org/x/net/context"
 	"google.golang.org/appengine/urlfetch"
 	"io/ioutil"
@@ -39,7 +38,7 @@ func (hk *WebHook) request(req *http.Request) ([]byte, error) {
 	return ioutil.ReadAll(res.Body)
 }
 
-func (hk *WebHook) PostMessage(payload *WebHookPostPayload) ([]byte, error) {
+func (hk *WebHook) PostMessage(payload *WebHookPostPayload) error {
 	body, err := json.Marshal(payload)
 	if err != nil {
 		return err
@@ -50,5 +49,7 @@ func (hk *WebHook) PostMessage(payload *WebHookPostPayload) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return hk.request(req)
+	_, err = hk.request(req)
+
+	return err
 }
